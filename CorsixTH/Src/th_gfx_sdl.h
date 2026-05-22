@@ -326,7 +326,8 @@ class render_target {
       @param eWhatToScale Th kind of items to scale.
       @return Whether the scale could be set.
    */
-  bool set_scale_factor(double fScale, scaled_items eWhatToScale);
+  bool set_scale_factor(double fScale, scaled_items eWhatToScale,
+                        bool bNearest = false, bool bComposite = false);
 
   //! Set the window caption
   void set_caption(const char* sCaption);
@@ -350,7 +351,7 @@ class render_target {
   class scoped_target_texture final : public scoped_buffer {
    public:
     scoped_target_texture(render_target* pTarget, int iX, int iY, int iWidth,
-                          int iHeight, bool bScale);
+                          int iHeight, bool bScale, bool bNearest);
     scoped_target_texture(scoped_target_texture&) = delete;
     scoped_target_texture& operator=(scoped_target_texture&) = delete;
     ~scoped_target_texture() override;

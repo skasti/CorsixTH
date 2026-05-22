@@ -378,16 +378,22 @@ void wx_storing::store_argb(uint32_t pixel) {
 }
 
 render_target::scoped_target_texture::scoped_target_texture(
-    render_target* pTarget, int iX, int iY, int iWidth, int iHeight,
-    bool bScale)
+  render_target* pTarget, int iX, int iY, int iWidth, int iHeight,
+  bool bScale, bool bNearest)
     : target(pTarget),
       previous_target(target->current_target),
       rect({iX, iY, iWidth, iHeight}),
       scale(bScale) {
   if (!target->supports_target_textures) return;
 
+  if (bNearest) {
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
+  }
   texture = SDL_CreateTexture(target->renderer, SDL_PIXELFORMAT_ABGR8888,
                               SDL_TEXTUREACCESS_TARGET, iWidth, iHeight);
+  if (bNearest) {
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+  }
   if (SDL_SetRenderTarget(target->renderer, texture) != 0) {
     SDL_DestroyTexture(texture);
     texture = nullptr;
@@ -518,21 +524,25 @@ bool render_target::update(const render_target_creation_params& params) {
   return true;
 }
 
-bool render_target::set_scale_factor(double fScale, scaled_items eWhatToScale) {
+bool render_target::set_scale_factor(double fScale, scaled_items eWhatToScale,
+                                     bool bNearest, bool bComposite) {
   zoom_buffer.reset();
   scale_bitmaps = false;
 
   if (fScale <= 0.000) {
     return false;
-  } else if (eWhatToScale == scaled_items::all && direct_zoom) {
+  } else if (eWhatToScale == scaled_items::all && direct_zoom &&
+             !bNearest && !bComposite) {
     global_scale_factor = fScale;
     if ((SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN_DESKTOP) ==
         SDL_WINDOW_FULLSCREEN_DESKTOP) {
       // Drawing to an intermediate screen sized buffer when fullscreen results
       // in noticeably better text rendering quality.
       zoom_buffer =
-          std::make_unique<scoped_target_texture>(this, 0, 0, width, height,
-                                                  /* bScale = */ true);
+          std::make_unique<scoped_target_texture>(
+            this, 0, 0, width, height,
+              /* bScale = */ true,
+              /* bNearest = */ false);
     }
     return true;
   } else if (eWhatToScale == scaled_items::all && supports_target_textures) {
@@ -543,7 +553,8 @@ bool render_target::set_scale_factor(double fScale, scaled_items eWhatToScale) {
     int virtHeight = static_cast<int>(height / fScale);
 
     zoom_buffer = std::make_unique<scoped_target_texture>(
-        this, 0, 0, virtWidth, virtHeight, /* bScale = */ false);
+    this, 0, 0, virtWidth, virtHeight,
+    /* bScale = */ false, bNearest);
     if (!zoom_buffer->is_target()) {
       global_scale_factor = 1.0;
       std::cout << "Warning: Could not render to zoom texture - "
@@ -988,8 +999,10 @@ render_target::begin_intermediate_drawing(int iX, int iY, int iWidth,
   // We only need an intermediate drawing if there is active scaling.
   if (draw_scale() == 1.0) return nullptr;
 
-  return std::make_unique<scoped_target_texture>(this, iX, iY, iWidth, iHeight,
-                                                 /* bScale = */ false);
+  return std::make_unique<scoped_target_texture>(
+      this, iX, iY, iWidth, iHeight,
+      /* bScale = */ false,
+      /* bNearest = */ false);
 }
 
 double render_target::draw_scale() const {

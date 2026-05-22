@@ -157,7 +157,7 @@ function UIPatient:draw(canvas, x_, y_)
   -- within the map (this situation doesn't occur very often, but we need to
   -- handle it properly when it does occur).
   px, py = self.ui.limitPointToDiamond(px, py, self.visible_diamond, true)
-  canvas:scale(s)
+  canvas:scale(s, "composite")
   self.ui.app.map:draw(canvas, px, py, 75, 76, math.floor(x / s) + 17, math.floor(y / s) + 216)
   canvas:scale(1)
   Window.draw(self, canvas, x_, y_)

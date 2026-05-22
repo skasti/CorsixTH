@@ -214,6 +214,39 @@ function GameUI:calculateMinimumZoom()
   return factor
 end
 
+function GameUI:getWorldZoomFactor()
+  return self.zoom_factor
+end
+
+function GameUI:scaleWorld(canvas)
+  local zoom = self.zoom_factor
+  local scaled = canvas:scale(zoom, "composite")
+  return zoom, scaled
+end
+
+function GameUI:beginWorldDraw(canvas)
+  local zoom, scaled = self:scaleWorld(canvas)
+  self.world_draw_scale = scaled and zoom or 1
+  return scaled
+end
+
+function GameUI:endWorldDraw(canvas)
+  if (self.world_draw_scale or 1) ~= 1 then
+    canvas:scale(1)
+  end
+  self.world_draw_scale = nil
+end
+
+function GameUI:WorldToCanvas(x, y)
+  local scale = self.world_draw_scale or 1
+  x, y = self:WorldToScreen(x, y)
+  if scale ~= 1 then
+    x = math.floor(x / scale)
+    y = math.floor(y / scale)
+  end
+  return x, y
+end
+
 function GameUI:setZoom(factor)
   if factor <= 0 then
     return false
@@ -248,13 +281,14 @@ function GameUI:draw(canvas)
     canvas:fillBlack()
   end
   local zoom = self.zoom_factor
+  local scaled = self:beginWorldDraw(canvas)
   local dx = self.screen_offset_x +
       math.floor((0.5 - math.random()) * self.shake_screen_intensity * shake_screen_max_movement * 2)
   local dy = self.screen_offset_y +
       math.floor((0.5 - math.random()) * self.shake_screen_intensity * shake_screen_max_movement * 2)
-  if canvas:scale(zoom) then
+  if scaled then
     app.map:draw(canvas, dx, dy, math.ceil(config.width / zoom), math.ceil(config.height / zoom), 0, 0)
-    canvas:scale(1)
+    self:endWorldDraw(canvas)
   else
     self:setZoom(1)
     app.map:draw(canvas, dx, dy, config.width, config.height, 0, 0)
@@ -405,12 +439,12 @@ function GameUI:makeDebugFax()
 end
 
 function GameUI:ScreenToWorld(x, y)
-  local zoom = self.zoom_factor
+  local zoom = self:getWorldZoomFactor()
   return self.app.map:ScreenToWorld(self.screen_offset_x + x / zoom, self.screen_offset_y + y / zoom)
 end
 
 function GameUI:WorldToScreen(x, y)
-  local zoom = self.zoom_factor
+  local zoom = self:getWorldZoomFactor()
   x, y = self.app.map:WorldToScreen(x, y)
   x = x - self.screen_offset_x
   y = y - self.screen_offset_y
@@ -429,7 +463,7 @@ function GameUI:setWorldHitTest(mode)
 end
 
 function GameUI:onCursorWorldPositionChange()
-  local zoom = self.zoom_factor
+  local zoom = self:getWorldZoomFactor()
   local x = math.floor(self.screen_offset_x + self.cursor_x / zoom)
   local y = math.floor(self.screen_offset_y + self.cursor_y / zoom)
   local entity = nil
@@ -583,7 +617,7 @@ function GameUI:onMouseMove(x, y, dx, dy)
   end
 
   if self:_isMouseScrollButtonDown() then
-    local zoom = self.zoom_factor
+    local zoom = self:getWorldZoomFactor()
     self.current_momentum.x = self.current_momentum.x - dx/zoom
     self.current_momentum.y = self.current_momentum.y - dy/zoom
 
@@ -914,7 +948,7 @@ end
 local abs, sqrt_5, floor = math.abs, math.sqrt(1 / 5), math.floor
 
 function GameUI:scrollMapTo(x, y)
-  local zoom = 2 * self.zoom_factor
+  local zoom = 2 * self:getWorldZoomFactor()
   local config = self.app.config
   return self:scrollMap(x - self.screen_offset_x - config.width / zoom,
                         y - self.screen_offset_y - config.height / zoom)

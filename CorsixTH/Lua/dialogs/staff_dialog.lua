@@ -167,7 +167,7 @@ function UIStaff:draw(canvas, x_, y_)
   local x, y = self.x * s + x_, self.y * s + y_
 
   local px, py = self:getStaffPosition(37, 61)
-  canvas:scale(s)
+  canvas:scale(s, "composite")
   self.ui.app.map:draw(canvas, px, py, 75, 75, math.floor(x / s) + 17, math.floor(y / s) + self.height - 93)
   canvas:scale(1)
   Window.draw(self, canvas, x_, y_)

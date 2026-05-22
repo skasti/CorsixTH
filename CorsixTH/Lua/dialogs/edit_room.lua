@@ -1062,14 +1062,12 @@ end
 function UIEditRoom:draw(canvas, ...)
   if self.world.user_actions_allowed then
     local ui = self.ui
-    local x, y = ui:WorldToScreen(self.mouse_cell_x, self.mouse_cell_y)
-    local zoom = self.ui.zoom_factor
-    if canvas:scale(zoom) then
-      x = math.floor(x / zoom)
-      y = math.floor(y / zoom)
-    end
+    local scaled = ui:beginWorldDraw(canvas)
+    local x, y = ui:WorldToCanvas(self.mouse_cell_x, self.mouse_cell_y)
     self.cell_outline:draw(canvas, 2, x - 32, y)
-    canvas:scale(1)
+    if scaled then
+      ui:endWorldDraw(canvas)
+    end
   end
 
   UIPlaceObjects.draw(self, canvas, ...)

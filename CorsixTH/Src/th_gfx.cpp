@@ -1063,8 +1063,11 @@ void chunk_renderer::chunk_copy(int npixels, const uint8_t* in_data) {
 }
 
 void chunk_renderer::fix_n_pixels(int& npixels) const {
-  if (ptr + npixels > end) {
-    npixels = static_cast<int>(end - ptr);
+  const int remaining = static_cast<int>(end - ptr);
+  if (remaining <= 0) {
+    npixels = 0;
+  } else if (npixels > remaining) {
+    npixels = remaining;
   }
 }
 

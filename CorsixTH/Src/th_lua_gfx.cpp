@@ -956,19 +956,28 @@ int l_surface_scale(lua_State* L) {
   ZoneScoped;
 
   render_target* pCanvas = luaT_testuserdata<render_target>(L);
-  scaled_items eToScale = scaled_items::none;
-  if (lua_isnoneornil(L, 3)) {
-    eToScale = scaled_items::all;
-  } else {
+  scaled_items eToScale = scaled_items::all;
+  bool bNearest = false;
+  bool bComposite = false;
+  for (int iArg = 3, iArgCount = lua_gettop(L); iArg <= iArgCount; ++iArg) {
     size_t iLength;
-    const char* sOption = lua_tolstring(L, 3, &iLength);
-    if (sOption && iLength >= 6 && std::memcmp(sOption, "bitmap", 6) == 0) {
+    const char* sOption = lua_tolstring(L, iArg, &iLength);
+    if (sOption == nullptr) {
+      continue;
+    }
+    if (iLength >= 6 && std::memcmp(sOption, "bitmap", 6) == 0) {
       eToScale = scaled_items::bitmaps;
-    } else
-      luaL_error(L, "Expected \"bitmap\" as 2nd argument");
+    } else if (std::strcmp(sOption, "nearest") == 0) {
+      bNearest = true;
+    } else if (std::strcmp(sOption, "composite") == 0) {
+      bComposite = true;
+    } else {
+      luaL_error(L, "Expected \"bitmap\", \"nearest\", or \"composite\" as scale option");
+    }
   }
   lua_pushboolean(L, pCanvas->set_scale_factor(
-                         static_cast<float>(luaL_checknumber(L, 2)), eToScale)
+                         static_cast<float>(luaL_checknumber(L, 2)), eToScale,
+                         bNearest, bComposite)
                          ? 1
                          : 0);
   return 1;

@@ -127,11 +127,10 @@ function UIPlaceStaff:draw(canvas)
   if self.world.user_actions_allowed then
     local valid = self:_isValidStaffPlacement()
     self.anim:setFlag(valid and 0 or flag_altpal)
-    local zoom = self.ui.zoom_factor
-    if canvas:scale(zoom) then
-      local x, y = self.ui:WorldToScreen(self.tile_x, self.tile_y)
-      self.anim:draw(canvas, math.floor(x / zoom), math.floor(y / zoom))
-      canvas:scale(1)
+    local scaled = self.ui:beginWorldDraw(canvas)
+    if scaled then
+      self.anim:draw(canvas, self.ui:WorldToCanvas(self.tile_x, self.tile_y))
+      self.ui:endWorldDraw(canvas)
     else
       self.anim:draw(canvas, self.ui:WorldToScreen(self.tile_x, self.tile_y))
     end

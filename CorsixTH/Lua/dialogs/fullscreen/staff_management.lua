@@ -383,7 +383,7 @@ function UIStaffManagement:draw(canvas, x, y)
 
     -- Current position in the game world
     local px, py = self:getStaffPosition(37, 61)
-    canvas:scale(s)
+    canvas:scale(s, "composite")
     self.ui.app.map:draw(canvas, px, py, 83, 82, math.floor(x / s) + 497, math.floor(y / s) + 373)
     canvas:scale(1)
     -- Portrait

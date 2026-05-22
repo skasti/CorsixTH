@@ -123,7 +123,7 @@ function UIStaffRise:draw(canvas, x, y)
   local font = self.white_font
 
   profile:drawFace(canvas, x + 99 * s, y + 47 * s, self.face_parts, s) -- Portrait
-  canvas:scale(s)
+  canvas:scale(s, "composite")
   self.ui.app.map:draw(canvas, px, py, 71, 81, math.floor(x / s) + 16, math.floor(y / s) + 44) -- Viewport
   canvas:scale(1)
 

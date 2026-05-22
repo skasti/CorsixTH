@@ -550,17 +550,15 @@ function UIPlaceObjects:draw(canvas, x, y)
   -- Don't show the object if the game is paused
   if self.world.user_actions_allowed then
     if not ATTACH_BLUEPRINT_TO_TILE and self.object_cell_x and self.object_anim then
-      local xpos, ypos = self.ui:WorldToScreen(self.object_cell_x, self.object_cell_y)
-      local zoom = self.ui.zoom_factor
-      if canvas:scale(zoom) then
-        xpos = math.floor(xpos / zoom)
-        ypos = math.floor(ypos / zoom)
-      end
+      local scaled = self.ui:beginWorldDraw(canvas)
+      local xpos, ypos = self.ui:WorldToCanvas(self.object_cell_x, self.object_cell_y)
       self.object_anim:draw(canvas, xpos, ypos)
       if self.objects[self.active_index].object.slave_type then
         self.object_slave_anim:draw(canvas, xpos, ypos)
       end
-      canvas:scale(1)
+      if scaled then
+        self.ui:endWorldDraw(canvas)
+      end
     end
   end
 
