@@ -757,6 +757,7 @@ menu_options = {
   autosave            = "  AUTOSAVE  ",
   game_speed          = "  VELOCIDADE DO JOGO  ",
   jukebox             = "  (%1%) JUKEBOX  ",
+  graphics            = "  GRAFICOS  ",
 }
 
 -- Menu Options Volume

@@ -1079,6 +1079,7 @@ menu_options = {
   music = "    (%1%) 音樂",
   autosave = "    自動儲存",
   jukebox = "    (%1%) 音樂盒",
+  graphics = "    圖形",
 }
 menu_options_game_speed = {
   normal = "    (%1%) 正常",

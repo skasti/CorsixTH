@@ -2995,6 +2995,7 @@ menu_options = {
   adviser_disabled = "  (%1%) ΒΟΗΘΟΣ  ",
   music = "  (%1%) ΜΟΥΣΙΚΗ   ",
   autosave = "  AUTOSAVE  ",
+  graphics = "  ΓΡΑΦΙΚΑ  ",
 }
 save_map_window = {
   new_map = "Νέος Χάρτης",

@@ -2759,6 +2759,7 @@ menu_options = {
   twentyfour_hour_clock = "  24 UUR KLOK  ",
   wage_increase = "  SALARIS VERZOEKEN  ",
   capture_mouse = "  MUIS VANGEN  ",
+  graphics = "  BEELD  ",
 }
 menu_options_wage_increase = {
   deny = "    AFWIJZEN ",

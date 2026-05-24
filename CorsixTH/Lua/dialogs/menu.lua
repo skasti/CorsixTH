@@ -804,6 +804,17 @@ function UIMenuBar:makeGameMenu(app)
     :appendCheckItem(_S.menu_options_game_speed.and_then_some_more:format(hotkey_value_label("ingame_gamespeed_thensome", hotkeys)), rate("And then some more"))
   )
 
+  options:appendMenu(_S.menu_options.graphics, UIMenu()
+    :appendCheckItem("  COMPOSITE RENDERING", app.config.composite_rendering, function(item)
+      app.config.composite_rendering = item.checked
+      app:initVideo()
+    end)
+    :appendCheckItem("  DIRECT ZOOM", app.config.direct_zoom, function(item)
+      app.config.direct_zoom = item.checked
+      app:initVideo()
+    end)
+  )
+
   self:addMenu(_S.menu.options, options)
 
   self:addMenu(_S.menu.charts, UIMenu()

@@ -1202,6 +1202,7 @@ menu_options = {
   settings          = "  ASETUKSET  ",
   sound             = "  (%1%) ÄÄNI  ",
   sound_vol         = "  ÄÄNENVOIMAKKUUS  ",
+  graphics          = "  GRAFIIKKA  ",
 }
 
 -- Menu Display

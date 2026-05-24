@@ -385,6 +385,7 @@ menu_options = {
   warmth_colors =         "    Цвета отопления ",
   adviser_disabled =      "    (%1%) Помощник  ",
   capture_mouse =         "  Привязка мышки  ",
+  graphics =                    "  Графика  ",
 }
 menu_options_game_speed = {
   pause =              "    (%1%) Пауза",

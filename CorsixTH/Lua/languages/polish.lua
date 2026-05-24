@@ -1291,6 +1291,7 @@ menu_options = {
   music = " (%1%) MUZYKA  ",
   autosave = "  AUTOZAPIS ",
   jukebox = "  (%1%) SZAFA GRAJĄCA ",
+  graphics = "  GRAFIKA  ",
 }
 menu_options_wage_increase = {
   grant = "    PRZYZNAWAJ ",

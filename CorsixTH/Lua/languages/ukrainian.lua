@@ -384,6 +384,7 @@ menu_options = {
   warmth_colors = "    КОЛЬОРИ ОПАЛЕННЯ ",
   adviser_disabled = "    (%1%) РАДНИК  ",
   capture_mouse = "  ЗАХОПЛЕННЯ МИШІ  ",
+  graphics = "  ГРАФІКА  ",
 }
 menu_options_game_speed = {
   pause =              "    (%1%) ПАУЗА ",

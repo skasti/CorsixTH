@@ -2800,6 +2800,7 @@ menu_options = {
   twentyfour_hour_clock = "    24-HODINOVÝ REŽIM  ",
   wage_increase = "    MZDOVÉ POŽADAVKY  ",
   capture_mouse = "    ZACHYCOVAT KURZOR  ",
+  graphics = "    GRAFIKA  ",
 }
 menu_options_warmth_colors = {
   choice_1 = "     ČERVENÁ  ",

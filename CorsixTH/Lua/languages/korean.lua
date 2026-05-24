@@ -869,6 +869,7 @@ menu_options = {
   game_speed = "  게임 속도  ",
   autosave = "  자동 저장  ",
   wage_increase = "  급여 인상  ",
+  graphics = "  그래픽  ",
 }
 menu_options_game_speed = {
   pause = "  (%1%) 일시 정지  ",

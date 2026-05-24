@@ -90,6 +90,45 @@ function App:getFullPath(folders, trailing_slash)
   return debug.getinfo(1, "S").source:sub(2, -12) .. table.concat(folders, pathsep) .. ending
 end
 
+function App:initVideo()
+  local modes = {}
+  self.fullscreen = false
+  if self.config.fullscreen then
+    self.fullscreen = true
+    modes[#modes + 1] = "fullscreen"
+  end
+  if self.config.track_fps then
+    modes[#modes + 1] = "present immediate"
+  end
+  if self.config.direct_zoom == nil or self.config.direct_zoom then
+    modes[#modes + 1] = "direct zoom"
+  end
+  if self.config.composite_rendering == false then
+    modes[#modes + 1] = "disable composite rendering"
+  end
+  self.modes = modes
+
+  if not self.video then
+    self.video = assert(TH.surface(
+        self.config.width,
+        self.config.height,
+        App.MIN_WINDOW_WIDTH * self.config.ui_scale,
+        App.MIN_WINDOW_HEIGHT * self.config.ui_scale,
+        unpack(modes)))
+    self.video:setBlueFilterActive(false)
+  else
+    local updateError = self.video:update(
+        self.config.width,
+        self.config.height,
+        App.MIN_WINDOW_WIDTH * self.config.ui_scale,
+        App.MIN_WINDOW_HEIGHT * self.config.ui_scale,
+        unpack(modes))
+    if updateError then
+      error("Unable to update video mode: " .. updateError)
+    end
+  end
+end
+
 function App:init()
   -- App initialisation 1st goal: Get the loading screen up
 
@@ -148,29 +187,7 @@ function App:init()
   -- Report operating system (possible values: "windows", "macos", "unix")
   self.os = compile_opts.os
 
-  local modes = {}
-  self.fullscreen = false
-  if self.config.fullscreen then
-    self.fullscreen = true
-    modes[#modes + 1] = "fullscreen"
-  end
-  if self.config.track_fps then
-    modes[#modes + 1] = "present immediate"
-  end
-  if self.config.direct_zoom == nil or self.config.direct_zoom then
-    modes[#modes + 1] = "direct zoom"
-  end
-  if self.config.composite_rendering == false then
-    modes[#modes + 1] = "disable composite rendering"
-  end
-  self.modes = modes
-  self.video = assert(TH.surface(
-      self.config.width,
-      self.config.height,
-      App.MIN_WINDOW_WIDTH * self.config.ui_scale,
-      App.MIN_WINDOW_HEIGHT * self.config.ui_scale,
-      unpack(modes)))
-  self.video:setBlueFilterActive(false)
+  self:initVideo()
   SDL.wm.setIconWin32()
 
   self.caption = "CorsixTH"

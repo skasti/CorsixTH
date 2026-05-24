@@ -877,6 +877,7 @@ menu_options = {
   autosave            = "  Automatikus mentés  ",
   game_speed          = "  Játék sebessége  ",
   jukebox             = "  (%1%) Zenegép  ",
+  graphics            = "  Grafika  ",
 }
 
 -- Menu Options Volume

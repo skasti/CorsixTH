@@ -1161,6 +1161,7 @@ menu_options = {
   autosave            = " 自动存盘 ",
   game_speed          = " 游戏速度 ",
   jukebox             = " 音乐盒 ",
+  graphics            = " 图形 ",
 }
 
 menu_options_volume = { -- redundant in original strings: M[10] and M[11]

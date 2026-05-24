@@ -1717,18 +1717,19 @@ menu_file_save = {
 
 -- Menu Options
 menu_options = {
-  sound               = "  (%1%) LYD  ",
-  announcements       = "  (%1%) SPEAKER  ",
-  music               = "  (%1%) MUSIKK  ",
-  sound_vol           = "  LYDVOLUM  ",
-  announcements_vol   = "  SPEAKERVOLUM  ",
-  music_vol           = "  MUSIKKVOLUM  ",
-  autosave            = "  AUTOLAGRING  ",
-  game_speed          = "  SPILLHASTIGHET  ",
-  jukebox             = "  (%1%) JUKEBOX  ",
+  sound                 = "  (%1%) LYD  ",
+  announcements         = "  (%1%) SPEAKER  ",
+  music                 = "  (%1%) MUSIKK  ",
+  sound_vol             = "  LYDVOLUM  ",
+  announcements_vol     = "  SPEAKERVOLUM  ",
+  music_vol             = "  MUSIKKVOLUM  ",
+  autosave              = "  AUTOLAGRING  ",
+  game_speed            = "  SPILLHASTIGHET  ",
+  jukebox               = "  (%1%) JUKEBOX  ",
   twentyfour_hour_clock = "  24 TIMERS KLOKKE  ",
-  wage_increase = "  LÖNNSBEGJÆRINGER", --todo: annet ord? "wage requests"
-  capture_mouse = "  LÅS MUSEPEKER  ",
+  wage_increase         = "  LÖNNSBEGJÆRINGER", --todo: annet ord? "wage requests"
+  capture_mouse         = "  LÅS MUSEPEKER  ",
+  graphics              = "  GRAFIKK  ",
 }
 
 menu_options_wage_increase = {

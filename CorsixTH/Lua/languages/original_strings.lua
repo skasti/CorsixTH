@@ -1017,6 +1017,7 @@ menu_options = {
   autosave            = M[3][7],
   game_speed          = M[3][8],
   jukebox             = M[3][9],
+  graphics = "  GRAPHICS  ",
 }
 
 menu_options_volume = { -- redundant in original strings: M[10] and M[11]

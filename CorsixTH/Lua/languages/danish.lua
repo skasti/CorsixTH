@@ -1039,6 +1039,7 @@ menu_options = {
   jukebox             = "  (%1%) JUKEBOX  ",
   edge_scrolling      = "  KANT SCROLLING  ",
   settings            = "  INDSTILLINGER  ",
+  graphics             = "  GRAFIK  ",
 }
 
 -- Menu Options Game Speed
