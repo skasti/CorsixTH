@@ -443,7 +443,8 @@ render_target::scoped_target_texture::~scoped_target_texture() {
 render_target::render_target(const render_target_creation_params& params)
     : width{params.width},
       height{params.height},
-      direct_zoom{params.direct_zoom} {
+      direct_zoom{params.direct_zoom},
+      composite_rendering{params.composite_rendering} {
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
   pixel_format = SDL_AllocFormat(SDL_PIXELFORMAT_ABGR8888);
   window = SDL_CreateWindow("CorsixTH", SDL_WINDOWPOS_UNDEFINED,
@@ -496,6 +497,8 @@ bool render_target::update(const render_target_creation_params& params) {
   bool bUpdateSize = (width != params.width) || (height != params.height);
   width = params.width;
   height = params.height;
+  direct_zoom = params.direct_zoom;
+  composite_rendering = params.composite_rendering;
 
   bool bIsFullscreen =
       ((SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN_DESKTOP) ==
@@ -529,10 +532,14 @@ bool render_target::set_scale_factor(double fScale, scaled_items eWhatToScale,
   zoom_buffer.reset();
   scale_bitmaps = false;
 
+  const bool useComposite =
+    eWhatToScale == scaled_items::all && !bNearest &&
+    composite_rendering && bComposite;
+
   if (fScale <= 0.000) {
     return false;
   } else if (eWhatToScale == scaled_items::all && direct_zoom &&
-             !bNearest && !bComposite) {
+             !useComposite) {
     global_scale_factor = fScale;
     if ((SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN_DESKTOP) ==
         SDL_WINDOW_FULLSCREEN_DESKTOP) {

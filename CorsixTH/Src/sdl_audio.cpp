@@ -36,7 +36,6 @@ SOFTWARE.
 #include "lua_sdl.h"
 #include "th_lua.h"
 #include "xmi2mid.h"
-
 class music {
  public:
   Mix_Music* pMusic{nullptr};

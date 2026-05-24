@@ -176,6 +176,7 @@ local function new_config_defaults()
     room_information_dialogs = true,
     blocking_off_areas = 2,
     direct_zoom = nil,
+    composite_rendering = nil,
     new_machine_extra_info = true,
     player_name = [[]],
   }
@@ -725,6 +726,13 @@ param(config_values, 'blocking_off_areas') .. [=[
 -- Improves performance and reliability on some hardware.
 --]=] .. '\n' ..
 param(config_values, 'direct_zoom') .. [=[
+
+-------------------------------------------------------------------------------
+-- Enable Composite Rendering: Allow callers to request composite scaling.
+-- nil or true keeps the current behavior.
+-- false ignores explicit composite requests and falls back to the old path.
+--]=] .. '\n' ..
+param(config_values, 'composite_rendering') .. [=[
 
 -------------------------------------------------------------------------------
 -- Replacing Machines: By default, you will see a new machines initial strength

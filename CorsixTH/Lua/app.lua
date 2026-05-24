@@ -160,6 +160,9 @@ function App:init()
   if self.config.direct_zoom == nil or self.config.direct_zoom then
     modes[#modes + 1] = "direct zoom"
   end
+  if self.config.composite_rendering == false then
+    modes[#modes + 1] = "disable composite rendering"
+  end
   self.modes = modes
   self.video = assert(TH.surface(
       self.config.width,

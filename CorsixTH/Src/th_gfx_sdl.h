@@ -55,6 +55,7 @@ struct render_target_creation_params {
                            ///< (else wait for Vsync).
   bool direct_zoom;  ///< Scale each texture when copying if true, otherwise
                      ///< render to intermediate texture and scale.
+  bool composite_rendering;  ///< Honor explicit composite requests.
   int min_width;     ///< Minimum width of the render target.
   int min_height;    ///< Minimum height of the render target.
 };
@@ -435,6 +436,7 @@ class render_target {
   // see: https://bugzilla.libsdl.org/show_bug.cgi?id=2700
   bool apply_opengl_clip_fix{};
   bool direct_zoom{};
+  bool composite_rendering{true};
 };
 
 //! Stored image.

@@ -766,6 +766,7 @@ render_target_creation_params l_surface_creation_params(lua_State* L,
   params.fullscreen = false;
   params.present_immediate = false;
   params.direct_zoom = false;
+  params.composite_rendering = true;
 
   // Parse string arguments, looking for matching parameter names.
   for (int iArg = iArgStart + 4, iArgCount = lua_gettop(L); iArg <= iArgCount;
@@ -781,6 +782,9 @@ render_target_creation_params l_surface_creation_params(lua_State* L,
     }
     if (std::strcmp(sOption, "direct zoom") == 0) {
       params.direct_zoom = true;
+    }
+    if (std::strcmp(sOption, "disable composite rendering") == 0) {
+      params.composite_rendering = false;
     }
   }
 

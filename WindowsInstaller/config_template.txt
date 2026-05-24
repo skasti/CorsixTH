@@ -429,6 +429,12 @@ blocking_off_areas = 2
 --
 direct_zoom = nil
 
+-- Composite Rendering: Allow callers to request composite scaling.
+-- nil or true keeps the current behavior.
+-- false ignores explicit composite requests and falls back to the old path.
+--
+composite_rendering = nil
+
 -------------------------------------------------------------------------------
 -- Replacing Machines: By default, you will see a new machines initial strength
 -- before purchasing it. If you don't want this change the value to false.
