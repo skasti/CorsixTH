@@ -296,6 +296,21 @@ local function makeGreyscaleGhost(pal)
   return table.concat(remap, "", 0, 255)
 end
 
+local function replay_stored_call(args)
+  local last = args.n or 1
+  if not args.n then
+    for key in pairs(args) do
+      if type(key) == "number" and key > last then
+        last = key
+      end
+    end
+  end
+  if last < 2 then
+    return args[1]()
+  end
+  return args[1](unpack(args, 2, last))
+end
+
 --! Load a palette file
 --!param dir (string) The directory of the palette relative to the HOSPITAL directory
 --!param name (string) The name of the palette file
@@ -457,8 +472,7 @@ function Graphics:onChangeLanguage()
     -- into a table being iterated over).
     for object, info in pairs(load_info) do
       if object._proxy then
-        local fn = info[1]
-        local new_object = fn(unpack(info, 2))
+        local new_object = replay_stored_call(info)
         object._proxy = new_object._proxy
       end
     end

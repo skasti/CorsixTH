@@ -71,6 +71,21 @@ local --[[persistable:persistance_global_fetch]] function global_fetch(...)
   return val
 end
 
+local function replay_stored_call(args)
+  local last = args.n or 1
+  if not args.n then
+    for key in pairs(args) do
+      if type(key) == "number" and key > last then
+        last = key
+      end
+    end
+  end
+  if last < 2 then
+    return args[1]()
+  end
+  return args[1](unpack(args, 2, last))
+end
+
 local function MakePermanentObjectsTable(inverted)
   local return_val = setmetatable({}, {})
   local permanent = return_val
@@ -158,7 +173,7 @@ local function MakePermanentObjectsTable(inverted)
     -- the __index metamethod to interpret this table as a function call
     getmetatable(return_val).__index = function(_, k)
       if type(k) == "table" then
-        return k[1](unpack(k, 2))
+        return replay_stored_call(k)
       end
     end
   else
@@ -325,5 +340,6 @@ function LoadGameFile(filename)
   local f = assert(io.open(filename, "rb"))
   local data = f:read("*a")
   f:close()
+  print("Loading game from " .. filename)
   LoadGame(data)
 end
